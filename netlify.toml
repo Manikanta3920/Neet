@@ -2,7 +2,7 @@
 # The Angular project lives in the `for-her/` subfolder.
 
 [build]
-  command = "npm ci && npm run build -- --base-href=/"
+  command = "npm ci && npm run build"
   publish = "dist/for-her/browser"
 
 [build.environment]
