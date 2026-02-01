@@ -1,0 +1,77 @@
+<aside class="sidebar">
+  <!-- Subjects Section with REAL progress -->
+  <div class="sidebar-section">
+    <h3 class="section-title">
+      <span class="section-icon">📚</span>
+      NEET Subjects
+    </h3>
+    <ul class="subject-list">
+      <li 
+        *ngFor="let subject of subjects" 
+        class="subject-item"
+        [class.active]="selectedSubject === subject.name"
+        (click)="selectSubject(subject.name)"
+      >
+        <div class="subject-icon" [style.background]="subject.color">
+          {{ subject.icon }}
+        </div>
+        <div class="subject-info">
+          <span class="subject-name">{{ subject.name }}</span>
+          <div class="progress-bar">
+            <div 
+              class="progress-fill" 
+              [style.width.%]="subject.progress" 
+              [style.background]="subject.color"
+            ></div>
+          </div>
+          <span class="progress-percent">
+            {{ subject.completed }}/{{ subject.total }} ({{ subject.progress }}%)
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Navigation Section -->
+  <div class="sidebar-section">
+    <h3 class="section-title">
+      <span class="section-icon">🧭</span>
+      Navigation
+    </h3>
+    <ul class="nav-list">
+      <li 
+        *ngFor="let nav of navLinks"
+        class="nav-item"
+        [class.active]="selectedNav === nav.name"
+      >
+        <a 
+          [routerLink]="nav.route" 
+          routerLinkActive="active-link"
+          (click)="selectNav(nav.name)"
+          class="nav-link"
+        >
+          <span class="nav-icon">{{ nav.icon }}</span>
+          <span class="nav-name">{{ nav.name }}</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- REAL Today's Stats -->
+  <div class="sidebar-section stats-section">
+    <h3 class="section-title">
+      <span class="section-icon">📊</span>
+      Today's Stats
+    </h3>
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-value">{{ todayStats.tasksDone }}</div>
+        <div class="stat-label">Tasks Done</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">{{ todayStats.studyTime }}</div>
+        <div class="stat-label">Study Time</div>
+      </div>
+    </div>
+  </div>
+</aside>

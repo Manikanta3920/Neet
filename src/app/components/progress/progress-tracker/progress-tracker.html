@@ -1,0 +1,146 @@
+<div class="progress-tracker">
+  <!-- Header -->
+  <div class="progress-header">
+    <h2>📊 Study Progress Dashboard</h2>
+    <p class="subtitle">Track your NEET preparation journey</p>
+  </div>
+
+  <!-- Overall Stats -->
+  <div class="overall-stats">
+    <div class="stat-card">
+      <div class="stat-icon">📚</div>
+      <div class="stat-content">
+        <div class="stat-value">{{ getOverallStats().total }}</div>
+        <div class="stat-label">Total Tasks</div>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-content">
+        <div class="stat-value">{{ getOverallStats().completed }}</div>
+        <div class="stat-label">Completed</div>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">⏰</div>
+      <div class="stat-content">
+        <div class="stat-value">{{ getOverallStats().totalTime }}h</div>
+        <div class="stat-label">Study Hours</div>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">🔥</div>
+      <div class="stat-content">
+        <div class="stat-value">{{ getOverallStats().streak }}d</div>
+        <div class="stat-label">Study Streak</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Subject Progress -->
+  <div class="section">
+    <h3 class="section-title">📖 Subject-wise Progress</h3>
+    <div class="subject-progress-grid">
+      <div *ngFor="let stat of getSubjectStats()" class="subject-card">
+        <div class="subject-header">
+          <div class="subject-icon" [style.background]="stat.color">
+            {{ stat.subject.charAt(0) }}
+          </div>
+          <div class="subject-info">
+            <h4>{{ stat.subject }}</h4>
+            <div class="subject-meta">
+              <span>✅ {{ stat.completed }}/{{ stat.total }}</span>
+              <span>⏰ {{ stat.totalTime | number:'1.1-1' }}h</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div 
+              class="progress-fill" 
+              [style.width.%]="stat.completionRate"
+              [style.background]="stat.color"
+            ></div>
+          </div>
+          <span class="progress-percent">{{ stat.completionRate }}%</span>
+        </div>
+        
+        <div class="subject-details">
+          <span class="detail-item">📝 {{ stat.pending }} pending</span>
+          <span class="detail-item" *ngIf="stat.revision > 0">🔁 {{ stat.revision }} to revise</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Priority Distribution -->
+  <div class="section">
+    <h3 class="section-title">🎯 Priority Distribution</h3>
+    <div class="priority-stats">
+      <div class="priority-item priority-high">
+        <div class="priority-label">
+          <span class="priority-dot"></span>
+          High Priority
+        </div>
+        <div class="priority-count">{{ getPriorityStats().high }} tasks</div>
+      </div>
+      <div class="priority-item priority-medium">
+        <div class="priority-label">
+          <span class="priority-dot"></span>
+          Medium Priority
+        </div>
+        <div class="priority-count">{{ getPriorityStats().medium }} tasks</div>
+      </div>
+      <div class="priority-item priority-low">
+        <div class="priority-label">
+          <span class="priority-dot"></span>
+          Low Priority
+        </div>
+        <div class="priority-count">{{ getPriorityStats().low }} tasks</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Export Section -->
+  <div class="section export-section">
+    <h3 class="section-title">💾 Backup Your Progress</h3>
+    <p>Export your study plan to keep a backup or transfer to another device.</p>
+    <button class="btn btn-export" (click)="exportData()">
+      📥 Export Study Plan
+    </button>
+    <small class="export-note">This will download a JSON file with all your tasks and progress.</small>
+  </div>
+
+  <!-- Add this after the export section -->
+<div class="section import-section">
+  <h3 class="section-title">📤 Import Study Plan</h3>
+  <p>Import a previously exported study plan file.</p>
+  <div class="import-box">
+    <input 
+      type="file" 
+      id="importFile" 
+      accept=".json" 
+      (change)="importData($event)"
+      class="file-input"
+      hidden
+    />
+    <label for="importFile" class="btn btn-import">
+      📁 Choose File to Import
+    </label>
+    <span class="file-name" id="fileName">No file chosen</span>
+  </div>
+  <small class="import-note">Only JSON files exported from For-Her app are supported.</small>
+</div>
+
+  <!-- Motivational Quote -->
+  <div class="motivation-section">
+    <div class="quote-icon">💪</div>
+    <p class="motivation-quote">
+      "Consistency is the key to cracking NEET. Every hour you study brings you closer to your dream college!"
+    </p>
+  </div>
+</div>

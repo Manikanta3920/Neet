@@ -1,0 +1,18 @@
+<div class="quick-actions">
+  <h3 class="actions-title">🚀 Quick Actions</h3>
+  <p class="actions-subtitle">Boost your productivity with one click</p>
+  
+  <div class="actions-grid">
+    <button 
+      *ngFor="let action of actions"
+      class="action-btn"
+      (click)="action.action()"
+      [style.border-color]="action.color"
+    >
+      <span class="action-icon" [style.background]="action.color">
+        {{ action.icon }}
+      </span>
+      <span class="action-label">{{ action.label }}</span>
+    </button>
+  </div>
+</div>

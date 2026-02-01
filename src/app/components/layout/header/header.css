@@ -1,0 +1,211 @@
+.header {
+  background: linear-gradient(135deg, #8a2be2 0%, #4b0082 100%);
+  color: white;
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo-section .app-title {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.tagline {
+  margin: 0.2rem 0 0 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.countdown-box {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-width: 140px;
+}
+
+.countdown-section {
+  text-align: center;
+}
+
+.countdown-label {
+  display: block;
+  font-size: 0.8rem;
+  margin-bottom: 0.3rem;
+  opacity: 0.9;
+  font-weight: 600;
+}
+
+.countdown-days {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #ffd700;
+  display: block;
+  line-height: 1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.countdown-phase {
+  font-size: 0.7rem;
+  margin-top: 0.3rem;
+  opacity: 0.9;
+  font-weight: 600;
+}
+
+.motivation-message {
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.motivation-section {
+  max-width: 400px;
+}
+
+.daily-quote {
+  font-style: italic;
+  font-size: 0.95rem;
+  margin: 0;
+  text-align: right;
+  opacity: 0.95;
+  line-height: 1.4;
+}
+
+/* Responsive updates */
+@media (max-width: 1024px) {
+  .countdown-days {
+    font-size: 1.8rem;
+  }
+  
+  .countdown-box {
+    padding: 0.8rem 1.2rem;
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .countdown-phase, .motivation-message {
+    display: none;
+  }
+  
+  .countdown-box {
+    min-width: 100px;
+  }
+  
+  .countdown-days {
+    font-size: 1.5rem;
+  }
+}
+.logo-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.logo-link:hover .app-title {
+  opacity: 0.9;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.nav-link.active {
+  background: rgba(255, 255, 255, 0.25);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Update header-container for spacing */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 1.5rem;
+}
+
+/* Adjust sections */
+.logo-section {
+  flex: 1;
+}
+
+.nav-links {
+  flex: 1;
+  justify-content: center;
+}
+
+.countdown-section {
+  flex: 0 0 auto;
+}
+
+.motivation-section {
+  flex: 2;
+  text-align: right;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .header-container {
+    flex-wrap: wrap;
+  }
+  
+  .motivation-section {
+    order: 3;
+    flex: 100%;
+    text-align: center;
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .nav-links {
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .motivation-section {
+    order: 3;
+  }
+  
+  .daily-quote {
+    text-align: center;
+  }
+}

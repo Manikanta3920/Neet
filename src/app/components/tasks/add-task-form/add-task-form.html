@@ -1,0 +1,119 @@
+<div class="add-task-form">
+  <h3 class="form-title">➕ Add New Study Task</h3>
+  
+  <form (ngSubmit)="onSubmit()" #taskForm="ngForm">
+    <div class="form-group">
+      <label for="taskTitle">Task Title *</label>
+      <input
+        type="text"
+        id="taskTitle"
+        name="title"
+        [(ngModel)]="newTask.title"
+        placeholder="e.g., Solve Physics Mechanics Problems"
+        required
+        class="form-control"
+      />
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="subject">Subject</label>
+        <select
+          id="subject"
+          name="subject"
+          [(ngModel)]="newTask.subject"
+          class="form-control"
+        >
+          <option *ngFor="let subject of subjects" [value]="subject">
+            <span class="subject-option" [style.color]="getSubjectColor(subject)">
+              {{ subject }}
+            </span>
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="priority">Priority</label>
+        <select
+          id="priority"
+          name="priority"
+          [(ngModel)]="newTask.priority"
+          class="form-control"
+        >
+          <option *ngFor="let priority of priorities" [value]="priority">
+            {{ priority }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="duration">Duration (minutes)</label>
+        <input
+          type="number"
+          id="duration"
+          name="duration"
+          [(ngModel)]="newTask.duration"
+          min="15"
+          max="240"
+          step="15"
+          class="form-control"
+        />
+        <small class="hint">{{ newTask.duration }} min = {{ newTask.duration/60 | number:'1.1-1' }} hours</small>
+      </div>
+
+      <div class="form-group">
+        <label for="dueDate">Deadline (Optional)</label>
+        <input
+          type="date"
+          id="dueDate"
+          name="dueDate"
+          [(ngModel)]="newTask.dueDate"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="notes">Notes (Optional)</label>
+      <textarea
+        id="notes"
+        name="notes"
+        [(ngModel)]="newTask.notes"
+        placeholder="Add important points, chapter names, or reminders..."
+        rows="3"
+        class="form-control"
+      ></textarea>
+    </div>
+
+    <div class="form-options">
+      <label class="checkbox-label">
+        <input
+          type="checkbox"
+          name="toRevise"
+          [(ngModel)]="newTask.toRevise"
+        />
+        <span class="checkmark"></span>
+        Mark for Revision 🔁
+      </label>
+    </div>
+
+    <div class="form-actions">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="cancel.emit()"
+      >
+        Cancel
+      </button>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="!newTask.title.trim()"
+      >
+        Add Task
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,204 @@
+<div class="task-list-container">
+  <!-- Header with Stats -->
+  <div class="list-header">
+    <div class="header-left">
+      <h2>📖 Study Tasks</h2>
+      <p class="subtitle">Manage your NEET preparation efficiently</p>
+    </div>
+    
+    <div class="header-stats">
+      <div class="stat-card" [class.active]="filterType === 'all'">
+        <div class="stat-number">{{ getTaskStats().total }}</div>
+        <div class="stat-label">Total</div>
+      </div>
+      <div class="stat-card" [class.active]="filterType === 'pending'">
+        <div class="stat-number">{{ getTaskStats().pending }}</div>
+        <div class="stat-label">Pending</div>
+      </div>
+      <div class="stat-card" [class.active]="filterType === 'completed'">
+        <div class="stat-number">{{ getTaskStats().completed }}</div>
+        <div class="stat-label">Completed</div>
+      </div>
+      <div class="stat-card" [class.active]="filterType === 'revision'">
+        <div class="stat-number">{{ getTaskStats().revision }}</div>
+        <div class="stat-label">To Revise</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-bar">
+    <div class="filter-group">
+      <button 
+        class="filter-btn" 
+        [class.active]="filterType === 'all'"
+        (click)="filterType = 'all'"
+      >
+        All Tasks
+      </button>
+      <button 
+        class="filter-btn" 
+        [class.active]="filterType === 'pending'"
+        (click)="filterType = 'pending'"
+      >
+        Pending
+      </button>
+      <button 
+        class="filter-btn" 
+        [class.active]="filterType === 'completed'"
+        (click)="filterType = 'completed'"
+      >
+        Completed
+      </button>
+      <button 
+        class="filter-btn" 
+        [class.active]="filterType === 'revision'"
+        (click)="filterType = 'revision'"
+      >
+        Needs Revision
+      </button>
+    </div>
+    
+    <button 
+      class="btn btn-primary add-task-btn"
+      (click)="showAddForm = true"
+      *ngIf="!showAddForm"
+    >
+      ➕ Add New Task
+    </button>
+    
+    <button 
+      class="btn btn-secondary"
+      (click)="showAddForm = false"
+      *ngIf="showAddForm"
+    >
+      Cancel
+    </button>
+  </div>
+
+<!-- Search Section -->
+<div class="search-section">
+  <div class="search-box">
+    <input
+      type="text"
+      placeholder="🔍 Search tasks by title, subject, or notes..."
+      [(ngModel)]="searchQuery"
+      class="search-input"
+    />
+    <button 
+      class="btn btn-filter-toggle"
+      (click)="showAdvancedFilters = !showAdvancedFilters"
+    >
+      <span class="toggle-icon">{{ showAdvancedFilters ? '▲' : '▼' }}</span>
+      Advanced Filters
+    </button>
+  </div>
+  
+  <!-- Advanced Filters -->
+  <div class="advanced-filters" *ngIf="showAdvancedFilters">
+    <div class="filter-row">
+      <div class="filter-group">
+        <label for="priorityFilter">Priority:</label>
+        <select 
+          id="priorityFilter"
+          [(ngModel)]="selectedPriority" 
+          class="filter-select"
+        >
+          <option value="All">All Priorities</option>
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="durationFilter">Duration:</label>
+        <select 
+          id="durationFilter"
+          [(ngModel)]="selectedDuration" 
+          class="filter-select"
+        >
+          <option value="All">Any Duration</option>
+          <option value="short">Short (&lt; 30 min)</option>
+          <option value="medium">Medium (30-90 min)</option>
+          <option value="long">Long (&gt; 90 min)</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="sortFilter">Sort by:</label>
+        <select 
+          id="sortFilter"
+          class="filter-select"
+          (change)="sortTasks($event)"
+        >
+          <option value="dueDate">Due Date</option>
+          <option value="priority">Priority</option>
+          <option value="duration">Duration</option>
+          <option value="createdAt">Recently Added</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="filter-actions">
+      <button class="btn btn-secondary" (click)="clearFilters()">
+        Clear Filters
+      </button>
+      <button class="btn btn-primary" (click)="applyFilters()">
+        Apply Filters
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Quick Actions before tasks container -->
+<app-quick-actions *ngIf="!showAddForm && getFilteredTasks().length > 0"></app-quick-actions>
+
+
+  <!-- Add Task Form -->
+  <app-add-task-form
+    *ngIf="showAddForm"
+    (taskAdded)="addTask($event)"
+    (cancel)="showAddForm = false"
+  ></app-add-task-form>
+
+  <!-- Task List -->
+  <div class="tasks-container" *ngIf="getFilteredTasks().length > 0; else emptyState">
+    <app-task-item
+      *ngFor="let task of getFilteredTasks()"
+      [task]="task"
+      (toggleComplete)="toggleTaskComplete($event)"
+      (toggleRevise)="toggleTaskRevise($event)"
+      (delete)="deleteTask($event)"
+    ></app-task-item>
+  </div>
+
+  <!-- Empty State -->
+  <ng-template #emptyState>
+    <div class="empty-state">
+      <div class="empty-icon">📚</div>
+      <h3>No tasks found</h3>
+      <p>
+        {{ filterType !== 'all' ? 
+          `No ${filterType} tasks. Try changing the filter.` : 
+          'Start by adding your first study task!' 
+        }}
+      </p>
+      <button 
+        class="btn btn-primary"
+        (click)="showAddForm = true"
+        *ngIf="filterType === 'all'"
+      >
+        Add Your First Task
+      </button>
+    </div>
+  </ng-template>
+
+  <!-- Summary -->
+  <div class="summary-footer" *ngIf="getFilteredTasks().length > 0">
+    <p>
+      📊 Showing {{ getFilteredTasks().length }} tasks • 
+      Total study time: {{ getTaskStats().totalStudyTime | number:'1.1-1' }} hours
+    </p>
+  </div>
+</div>

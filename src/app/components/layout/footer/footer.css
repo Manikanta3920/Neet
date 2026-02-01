@@ -1,0 +1,22 @@
+.footer {
+  background: #343a40;
+  color: #adb5bd;
+  padding: 1.5rem;
+  text-align: center;
+  border-top: 3px solid #8a2be2;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer p {
+  margin: 0.3rem 0;
+}
+
+.footer-motto {
+  font-style: italic;
+  color: #dee2e6;
+  margin-top: 0.5rem !important;
+}

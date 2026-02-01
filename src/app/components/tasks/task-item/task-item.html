@@ -1,0 +1,76 @@
+<div class="task-item" [class.completed]="task.completed">
+  <div class="task-checkbox">
+    <button 
+      class="checkbox-btn" 
+      [class.checked]="task.completed"
+      (click)="toggleComplete.emit(task.id)"
+      aria-label="Toggle completion"
+    >
+      {{ task.completed ? '✓' : '' }}
+    </button>
+  </div>
+
+  <div class="task-content">
+    <div class="task-header">
+      <span class="task-title" [class.strikethrough]="task.completed">
+        {{ task.title }}
+      </span>
+      <div class="task-actions">
+        <button 
+          class="action-btn revise-btn" 
+          [class.active]="task.toRevise"
+          (click)="toggleRevise.emit(task.id)"
+          title="Mark for revision"
+        >
+          🔄
+        </button>
+        <button 
+          class="action-btn edit-btn" 
+          (click)="edit.emit(task)"
+          title="Edit task"
+        >
+          ✏️
+        </button>
+        <button 
+          class="action-btn delete-btn" 
+          (click)="delete.emit(task.id)"
+          title="Delete task"
+        >
+          🗑️
+        </button>
+      </div>
+    </div>
+
+    <div class="task-meta">
+      <span class="subject-badge" [style.background]="getSubjectColor(task.subject)">
+        {{ task.subject }}
+      </span>
+      
+      <span class="priority-badge" [class]="'priority-' + task.priority.toLowerCase()">
+        <span class="priority-icon">{{ getPriorityIcon(task.priority) }}</span>
+        {{ task.priority }}
+      </span>
+      
+      <span class="duration">
+        ⏱️ {{ formatDuration(task.duration) }}
+      </span>
+      
+      <span class="deadline" *ngIf="task.dueDate">
+        📅 {{ formatDate(task.dueDate) }}
+      </span>
+    </div>
+
+    <p class="task-notes" *ngIf="task.notes">
+      {{ task.notes }}
+    </p>
+
+    <div class="task-footer">
+      <small class="created-date">
+        Added {{ task.createdAt | date:'MMM d' }}
+      </small>
+      <span class="revise-tag" *ngIf="task.toRevise">
+        🔁 Needs Revision
+      </span>
+    </div>
+  </div>
+</div>

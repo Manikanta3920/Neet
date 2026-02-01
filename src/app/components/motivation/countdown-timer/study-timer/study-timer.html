@@ -1,0 +1,201 @@
+<div class="study-timer">
+  <!-- Header -->
+  <div class="timer-header">
+    <h2>⏰ Focus Study Timer</h2>
+    <p class="subtitle">Pomodoro technique for effective NEET preparation</p>
+  </div>
+  
+  <div class="timer-container">
+    <!-- Timer Display -->
+    <div class="timer-display">
+      <div class="mode-indicator" [style.background]="timerMode() === 'work' ? '#FF6B6B' : timerMode() === 'shortBreak' ? '#4ECDC4' : '#45B7D1'">
+        <span class="mode-icon">{{ modeIcon }}</span>
+        <span class="mode-text">{{ modeLabel }}</span>
+      </div>
+      
+      <div class="time-display">
+        <div class="time-digits">{{ displayTime }}</div>
+        <div class="time-label">minutes remaining</div>
+      </div>
+      
+      <!-- Progress Circle -->
+      <div class="progress-circle">
+        <svg width="200" height="200" viewBox="0 0 200 200">
+          <!-- Background circle -->
+          <circle 
+            cx="100" 
+            cy="100" 
+            r="90" 
+            stroke="#e9ecef" 
+            stroke-width="10" 
+            fill="transparent"
+          />
+          <!-- Progress circle -->
+          <circle 
+            cx="100" 
+            cy="100" 
+            r="90" 
+            [attr.stroke]="timerMode() === 'work' ? '#FF6B6B' : timerMode() === 'shortBreak' ? '#4ECDC4' : '#45B7D1'"
+            stroke-width="10" 
+            fill="transparent"
+            stroke-linecap="round"
+            [attr.stroke-dasharray]="565.48"
+            [attr.stroke-dashoffset]="565.48 * (1 - progressPercentage / 100)"
+            transform="rotate(-90 100 100)"
+          />
+        </svg>
+        <div class="progress-text">{{ progressPercentage | number:'1.0-0' }}%</div>
+      </div>
+      
+      <!-- Timer Controls -->
+      <div class="timer-controls">
+        <button 
+          class="btn-control start-btn" 
+          *ngIf="!isRunning()"
+          (click)="startTimer()"
+        >
+          ▶ Start Focus Session
+        </button>
+        
+        <button 
+          class="btn-control pause-btn" 
+          *ngIf="isRunning()"
+          (click)="pauseTimer()"
+        >
+          ⏸ Pause
+        </button>
+        
+        <button 
+          class="btn-control reset-btn" 
+          (click)="resetTimer()"
+          [disabled]="isRunning()"
+        >
+          🔄 Reset
+        </button>
+        
+        <button 
+          class="btn-control stop-btn" 
+          (click)="stopTimer()"
+        >
+          ⏹ Stop
+        </button>
+      </div>
+    </div>
+    
+    <!-- Session Settings -->
+    <div class="session-settings">
+      <h3>🎯 Session Settings</h3>
+      
+      <div class="setting-group">
+        <label for="subjectSelect">Study Subject</label>
+        <select 
+          id="subjectSelect" 
+          [(ngModel)]="selectedSubject"
+          class="form-select"
+          [disabled]="isRunning()"
+        >
+          <option *ngFor="let subject of subjects" [value]="subject">
+            {{ subject }}
+          </option>
+        </select>
+        <div class="subject-color" [style.background]="getSubjectColor(selectedSubject)"></div>
+      </div>
+      
+      <div class="setting-group">
+        <label for="sessionNotes">Session Notes (Optional)</label>
+        <textarea 
+          id="sessionNotes" 
+          [(ngModel)]="sessionNotes"
+          placeholder="What are you focusing on in this session? e.g., 'Organic Chemistry - Reaction Mechanisms'"
+          class="form-textarea"
+          rows="3"
+        ></textarea>
+      </div>
+      
+      <!-- Mode Selection -->
+      <div class="mode-selection">
+        <h4>Select Timer Mode:</h4>
+        <div class="mode-buttons">
+          <button 
+            class="mode-btn" 
+            [class.active]="timerMode() === 'work'"
+            (click)="switchMode('work')"
+            [disabled]="isRunning()"
+          >
+            <span class="mode-btn-icon">📚</span>
+            <span class="mode-btn-text">Study</span>
+            <small>25 min</small>
+          </button>
+          
+          <button 
+            class="mode-btn" 
+            [class.active]="timerMode() === 'shortBreak'"
+            (click)="switchMode('shortBreak')"
+            [disabled]="isRunning()"
+          >
+            <span class="mode-btn-icon">☕</span>
+            <span class="mode-btn-text">Short Break</span>
+            <small>5 min</small>
+          </button>
+          
+          <button 
+            class="mode-btn" 
+            [class.active]="timerMode() === 'longBreak'"
+            (click)="switchMode('longBreak')"
+            [disabled]="isRunning()"
+          >
+            <span class="mode-btn-icon">🌴</span>
+            <span class="mode-btn-text">Long Break</span>
+            <small>15 min</small>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Today's Stats -->
+      <div class="today-stats">
+        <h4>📊 Today's Progress</h4>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-value">{{ cyclesCompleted() }}</div>
+            <div class="stat-label">Pomodoros</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">{{ getTotalStudyTimeToday() | number:'1.1-1' }}</div>
+            <div class="stat-label">Study Hours</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">{{ getTodaySessions().length }}</div>
+            <div class="stat-label">Sessions</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Pomodoro Technique Tips -->
+  <div class="tips-section">
+    <h3>💡 Pomodoro Technique Tips for NEET</h3>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <div class="tip-icon">🎯</div>
+        <h4>Set Clear Goals</h4>
+        <p>Before starting, decide what specific topic or chapter you'll study in this 25-minute session.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🚫</div>
+        <h4>Eliminate Distractions</h4>
+        <p>Put your phone away and close unnecessary tabs. Focus only on NEET preparation during study sessions.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">📝</div>
+        <h4>Quick Revision</h4>
+        <p>Use the 5-minute breaks to quickly revise what you just studied. This enhances retention.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">💪</div>
+        <h4>Stay Consistent</h4>
+        <p>Aim for 4-6 pomodoros per day. Consistency matters more than marathon study sessions.</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+# Netlify deploy config for this repo structure.
+# The Angular project lives in the `for-her/` subfolder.
+
+[build]
+  base = "for-her"
+  command = "npm ci && npm run build -- --base-href=/"
+  publish = "dist/for-her/browser"
+
+[build.environment]
+  # Angular 21 expects a modern Node. Netlify supports 20/22.
+  NODE_VERSION = "20"
+
+# SPA routing (Angular Router): send all routes to index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -1,0 +1,50 @@
+<header class="header">
+  <div class="header-container">
+    <!-- Logo Section -->
+    <div class="logo-section">
+      <h1 class="app-title">📚 {{ appName }}</h1>
+      <p class="tagline">Your NEET Preparation Companion</p>
+    </div>
+    
+    <!-- Navigation Links -->
+    <nav class="nav-links">
+      <a 
+        routerLink="/tasks" 
+        routerLinkActive="active" 
+        [routerLinkActiveOptions]="{ exact: false }"
+        class="nav-link"
+      >
+        📋 Tasks
+      </a>
+      <a 
+        routerLink="/progress" 
+        routerLinkActive="active" 
+        class="nav-link"
+      >
+        📊 Progress
+      </a>
+      <a 
+        routerLink="/timer" 
+        routerLinkActive="active" 
+        class="nav-link"
+      >
+        ⏰ Timer
+      </a>
+    </nav>
+    
+    <!-- Countdown Section -->
+    <div class="countdown-section">
+      <div class="countdown-box">
+        <span class="countdown-label">Days to NEET 2026</span>
+        <span class="countdown-days">{{ daysToNEET }}</span>
+        <!-- Phase removed -->
+      </div>
+    </div>
+    
+    <!-- Motivation Section -->
+    <div class="motivation-section">
+      <p class="daily-quote">"{{ currentQuote }}"</p>
+      <!-- Motivation message also removed since getMotivationMessage() doesn't exist -->
+    </div>
+  </div>
+</header>
